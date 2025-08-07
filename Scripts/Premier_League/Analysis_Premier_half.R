@@ -105,7 +105,7 @@ neg_bin <- stan_foot(
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4321
+  method = "MCMC", seed = 4231
 )
 
 
@@ -183,7 +183,7 @@ double_pois_owen <- stan_foot(
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4231
+  method = "MCMC", seed = 4321
 )
 
 
@@ -244,11 +244,11 @@ biv_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4231
+  method = "MCMC", seed = 4321
 )
 
 
@@ -260,11 +260,11 @@ diag_biv_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4231
+  method = "MCMC", seed = 4321
 )
 
 
@@ -276,11 +276,11 @@ double_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4231
+  method = "MCMC", seed = 4321
 )
 
 
@@ -292,11 +292,11 @@ neg_bin_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4231
+  method = "MCMC", seed = 4321
 )
 
 
@@ -308,11 +308,11 @@ skellam_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4231
+  method = "MCMC", seed = 4321
 )
 
 
@@ -324,11 +324,11 @@ zero_skellam_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 4231
+  method = "MCMC", seed = 4321
 )
 
 
@@ -357,8 +357,7 @@ comparison_premier_half <- compare_foot(source = list(
   skellam_owen = skellam_owen,
   zero_skellam_comm = zero_skellam_comm,
   zero_skellam_egidi = zero_skellam,
-  zero_skellam_owen = zero_skellam_owen
-), test_data = premier_test)
+  zero_skellam_owen = zero_skellam_owen), test_data = premier_test)
 
 comparison_premier_half
 

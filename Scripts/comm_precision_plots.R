@@ -144,25 +144,25 @@ biv_pois_bundes_scen_1 <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.5),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 # EPL
 zero_skellam_premier_scen_1 <- stan_foot(
   data = premier,
-  model = "zero_infl_skellam",
+  model = "skellam",
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.55),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 # La Liga
@@ -172,11 +172,11 @@ diag_biv_pois_liga_scen_1 <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 
@@ -189,11 +189,11 @@ biv_pois_bundes_scen_2 <- stan_foot(
   predict = 27,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.3),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 diag_biv_pois_premier_scen_2 <- stan_foot(
@@ -202,11 +202,11 @@ diag_biv_pois_premier_scen_2 <- stan_foot(
   predict = 30,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.5),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 diag_biv_pois_liga_scen_2 <- stan_foot(
@@ -215,11 +215,11 @@ diag_biv_pois_liga_scen_2 <- stan_foot(
   predict = 30,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 
@@ -333,11 +333,11 @@ biv_pois_bundes_scen_3 <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.5),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 biv_pois_premier_scen_3 <- stan_foot(
@@ -346,11 +346,11 @@ biv_pois_premier_scen_3 <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 diag_biv_pois_liga_scen_3 <- stan_foot(
@@ -359,11 +359,11 @@ diag_biv_pois_liga_scen_3 <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
-  method = "MCMC", seed = 433
+  method = "MCMC", seed = 4321
 )
 
 model_fits_by_scen <- list(

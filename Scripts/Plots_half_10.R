@@ -9,9 +9,9 @@ library(purrr)
 #   ____________________________________________________________________________
 #   Load                                                                    ####
 
-load("~/Desktop/Work/Projects/HBGM/RData/La_Liga/comparison_liga_half_10.RData")
-load("~/Desktop/Work/Projects/HBGM/RData/Premier_League/comparison_premier_half_10.RData")
-load("~/Desktop/Work/Projects/HBGM/RData/Bundesliga/comparison_bundes_half_9.RData")
+load("RData/La_Liga/comparison_liga_half_10.RData")
+load("RData/Premier_League/comparison_premier_half_10.RData")
+load("RData/Bundesliga/comparison_bundes_half_9.RData")
 # Merging data
 
 

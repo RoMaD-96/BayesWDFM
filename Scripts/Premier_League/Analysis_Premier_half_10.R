@@ -241,7 +241,7 @@ biv_pois_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.55),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -257,7 +257,7 @@ diag_biv_pois_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.55),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -273,7 +273,7 @@ double_pois_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.55),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -289,7 +289,7 @@ neg_bin_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.55),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -305,7 +305,7 @@ skellam_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.55),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -321,7 +321,7 @@ zero_skellam_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.55),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -413,9 +413,9 @@ get_ability_df <- function(stan_obj, variant_name, teams, type = "both") {
 
 my_teams <- c("Man City", "Man United")
 
-df_comm <- get_ability_df(zero_skellam_comm, "Comm", my_teams)
-df_owen <- get_ability_df(zero_skellam_owen, "Owen", my_teams)
-df_egidi <- get_ability_df(zero_skellam, "Egidi", my_teams)
+df_comm <- get_ability_df(skellam_comm, "Comm", my_teams)
+df_owen <- get_ability_df(skellam_owen, "Owen", my_teams)
+df_egidi <- get_ability_df(skellam, "Egidi", my_teams)
 
 df_abilities_premier_half_10 <- bind_rows(df_comm, df_owen, df_egidi)
 save(df_abilities_premier_half_10, file = "RData/Premier_League/Abilities/df_abilities_premier_half_10.RData")

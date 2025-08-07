@@ -11,9 +11,9 @@ library(forcats)
 #   ____________________________________________________________________________
 #   Data                                                                    ####
 
-load("~/Desktop/Work/Projects/HBGM/RData/La_Liga/Abilities/df_abilities_liga_half_10.RData")
-load("~/Desktop/Work/Projects/HBGM/RData/Bundesliga/Abilities/df_abilities_bundesliga_half_10.RData")
-load("~/Desktop/Work/Projects/HBGM/RData/Premier_League/Abilities/df_abilities_premier_half_10.RData")
+load("RData/La_Liga/Abilities/df_abilities_liga_half_10.RData")
+load("RData/Bundesliga/Abilities/df_abilities_bundesliga_half_10.RData")
+load("RData/Premier_League/Abilities/df_abilities_premier_half_10.RData")
 
 bundesliga <- df_abilities_bundesliga_half_10
 liga <- df_abilities_liga_half_10

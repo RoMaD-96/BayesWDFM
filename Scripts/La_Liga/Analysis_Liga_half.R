@@ -241,7 +241,7 @@ biv_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -257,7 +257,7 @@ diag_biv_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -273,7 +273,7 @@ double_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -289,7 +289,7 @@ neg_bin_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -305,7 +305,7 @@ skellam_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -321,7 +321,7 @@ zero_skellam_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.4),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -354,8 +354,7 @@ comparison_liga_half <- compare_foot(source = list(
   skellam_owen = skellam_owen,
   zero_skellam_comm = zero_skellam_comm,
   zero_skellam_egidi = zero_skellam,
-  zero_skellam_owen = zero_skellam_owen
-), test_data = la_liga_test)
+  zero_skellam_owen = zero_skellam_owen), test_data = la_liga_test)
 
 comparison_liga_half
 
