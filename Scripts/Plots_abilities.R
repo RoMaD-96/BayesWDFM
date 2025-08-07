@@ -63,7 +63,7 @@ ability_plot <- ggplot(combined, aes(period, mid,
     color = NA,
     show.legend = FALSE
   ) +
-   geom_hline(yintercept = 0, linetype = "dotdash", color = "grey50", size = 0.8) + 
+  geom_hline(yintercept = 0, linetype = "dotdash", color = "grey50", size = 0.8) +
   geom_line(size = 1) +
   facet_grid(team ~ model_type, scales = "free_y") +
   scale_color_manual(
