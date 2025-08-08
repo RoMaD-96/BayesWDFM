@@ -29,7 +29,6 @@ combined <- bind_rows(bundesliga, liga, premier) %>%
       TRUE ~ "Dynamic"
     )
   ) %>%
-  # re-level model_type so facets come out in the order you want:
   mutate(
     model_type = factor(
       model_type,
@@ -90,7 +89,7 @@ ability_plot <- ggplot(combined, aes(period, mid,
   ) +
   theme_bw() +
   theme(
-    strip.placement = "outside", # format to look like title
+    strip.placement = "outside",
     strip.text.x = element_text(size = 18),
     strip.text.y = element_text(size = 18),
     legend.position = "top",

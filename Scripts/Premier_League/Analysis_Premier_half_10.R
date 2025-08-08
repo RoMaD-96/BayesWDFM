@@ -6,7 +6,7 @@ library(bayesplot)
 library(dplyr)
 library(footBayes)
 library(readr)
-library(tictoc) 
+library(tictoc)
 library(purrr)
 
 #   ____________________________________________________________________________
@@ -26,19 +26,21 @@ premier_22_23$season <- 2023
 premier_23_24$season <- 2024
 premier_24_25$season <- 2025
 
-premier <- rbind(
-  premier_20_21[, c(107, 4:7)],
-  premier_21_22[, c(107, 4:7)],
-  premier_22_23[, c(107, 4:7)],
-  premier_23_24[, c(107, 4:7)],
-  premier_24_25[, c(121, 4:7)]
+premier <- bind_rows(
+  premier_20_21 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_21_22 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_22_23 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_23_24 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_24_25 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG)
 )
+
+#   ____________________________________________________________________________
+#   Compute periods                                                          ####
 
 premier <- premier %>%
   group_by(season) %>%
   mutate(
     match_id = row_number(),
-    # first half = matches 1…n/2, second half = the rest
     half     = if_else(match_id <= n() / 2, 1L, 2L)
   ) %>%
   ungroup() %>%
@@ -48,6 +50,7 @@ premier <- premier %>%
   select(periods, HomeTeam, AwayTeam, FTHG, FTAG)
 
 colnames(premier) <- c("periods", "home_team", "away_team", "home_goals", "away_goals")
+
 
 ### . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ..
 ### Dynamic Models Egidi (2018)                                             ####
@@ -241,7 +244,7 @@ biv_pois_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -257,7 +260,7 @@ diag_biv_pois_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -273,7 +276,7 @@ double_pois_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -289,7 +292,7 @@ neg_bin_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -305,7 +308,7 @@ skellam_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -321,7 +324,7 @@ zero_skellam_comm <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -433,12 +436,11 @@ models <- list(
   zero_skellam  = zero_skellam_comm
 )
 
-# Parameters of interest 
+# Parameters of interest
 pars <- c("att", "def", "comm_sd_att", "comm_sd_def")
 
 # Function to extract one fit’s grouped diagnostics
 extract_diagnostics <- function(mod, model_name) {
-
   sum_df <- mod$fit$summary()
   sum_df %>%
     dplyr::filter(stringr::str_detect(

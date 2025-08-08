@@ -26,7 +26,6 @@ df_all <- df_all %>%
       str_detect(model, "_owen$") ~ "Owen (2011)",
       TRUE ~ "Egidi et al. (2018)"
     ),
-    # force the factor levels in the desired order
     model_type = factor(
       model_type,
       levels = c("Weighted Dynamic", "Owen (2011)", "Egidi et al. (2018)")

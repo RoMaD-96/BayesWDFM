@@ -22,13 +22,16 @@ liga_22_23$season <- 2023
 liga_23_24$season <- 2024
 liga_24_25$season <- 2025
 
-la_liga <- rbind(
-  liga_20_21[, c(106, 4:7)],
-  liga_21_22[, c(106, 4:7)],
-  liga_22_23[, c(106, 4:7)],
-  liga_23_24[, c(106, 4:7)],
-  liga_24_25[, c(120, 4:7)]
+la_liga <- bind_rows(
+  liga_20_21 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_21_22 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_22_23 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_23_24 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_24_25 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG)
 )
+
+#   ____________________________________________________________________________
+#   Compute periods                                                          ####
 
 latest_season <- max(la_liga$season, na.rm = TRUE)
 
@@ -241,7 +244,7 @@ biv_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -257,7 +260,7 @@ diag_biv_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -273,7 +276,7 @@ double_pois_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -289,7 +292,7 @@ neg_bin_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -305,7 +308,7 @@ skellam_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -321,7 +324,7 @@ zero_skellam_comm <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -354,7 +357,8 @@ comparison_liga_half <- compare_foot(source = list(
   skellam_owen = skellam_owen,
   zero_skellam_comm = zero_skellam_comm,
   zero_skellam_egidi = zero_skellam,
-  zero_skellam_owen = zero_skellam_owen), test_data = la_liga_test)
+  zero_skellam_owen = zero_skellam_owen
+), test_data = la_liga_test)
 
 comparison_liga_half
 
@@ -378,7 +382,7 @@ pars <- c("att", "def", "comm_sd_att", "comm_sd_def")
 # Function to extract one fit’s grouped diagnostics
 extract_diagnostics <- function(mod, model_name) {
   sum_df <- mod$fit$summary()
-  
+
   sum_df %>%
     dplyr::filter(stringr::str_detect(
       variable,

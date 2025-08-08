@@ -23,7 +23,6 @@ bundesliga_22_23$season <- 2023
 bundesliga_23_24$season <- 2024
 bundesliga_24_25$season <- 2025
 
-# Row‐bind keeping only season + the four match columns
 bundesliga <- bind_rows(
   bundesliga_20_21 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
   bundesliga_21_22 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
@@ -32,7 +31,6 @@ bundesliga <- bind_rows(
   bundesliga_24_25 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG)
 )
 
-# Pre‐compute the newest season so we can “protect” it
 latest_season <- max(bundesliga$season, na.rm = TRUE)
 
 #   ____________________________________________________________________________
@@ -42,7 +40,6 @@ bundesliga <- bundesliga %>%
   group_by(season) %>%
   mutate(
     match_id = row_number(),
-    # first half = matches 1…n/2, second half = the rest
     half     = if_else(match_id <= n() / 2, 1L, 2L)
   ) %>%
   ungroup() %>%
@@ -249,7 +246,7 @@ biv_pois_comm <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -265,7 +262,7 @@ diag_biv_pois_comm <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -281,7 +278,7 @@ double_pois_comm <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -297,7 +294,7 @@ neg_bin_comm <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -313,7 +310,7 @@ skellam_comm <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -329,7 +326,7 @@ zero_skellam_comm <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -469,19 +466,18 @@ models <- list(
   skellam       = skellam_comm,
   zero_skellam  = zero_skellam_comm
 )
-# 2. Parameters of interest (corrected typo)
 pars <- c("att", "def", "comm_sd_att", "comm_sd_def")
-# 3. Function to extract one fit’s grouped diagnostics
+
 extract_diagnostics <- function(mod, model_name) {
-  # pull the summary tibble
   sum_df <- mod$fit$summary()
-  # then use the dplyr/stringr verbs explicitly
   sum_df %>%
-    dplyr::filter(stringr::str_detect(variable,
-                                      paste0("^(", paste(pars, collapse = "|"), ")"))) %>%
+    dplyr::filter(stringr::str_detect(
+      variable,
+      paste0("^(", paste(pars, collapse = "|"), ")")
+    )) %>%
     dplyr::group_by(prefix = sub("\\[.*", "", variable)) %>%
     dplyr::summarise(
-      mean_rhat     = mean(rhat,     na.rm = TRUE),
+      mean_rhat = mean(rhat, na.rm = TRUE),
       mean_ess_bulk = mean(ess_bulk, na.rm = TRUE),
       mean_ess_tail = mean(ess_tail, na.rm = TRUE),
       .groups = "drop"
@@ -489,7 +485,8 @@ extract_diagnostics <- function(mod, model_name) {
     dplyr::mutate(model = model_name) %>%
     dplyr::select(model, prefix, everything())
 }
-# 4. Map over all models and bind rows
+
+# Map over all models and bind rows
 all_stats <- purrr::imap_dfr(models, extract_diagnostics)
 print(all_stats)
 stats_bundes <- all_stats

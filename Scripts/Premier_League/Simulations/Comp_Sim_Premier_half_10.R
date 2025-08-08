@@ -23,13 +23,16 @@ premier_22_23$season <- 2023
 premier_23_24$season <- 2024
 premier_24_25$season <- 2025
 
-premier <- rbind(
-  premier_20_21[, c(107, 4:7)],
-  premier_21_22[, c(107, 4:7)],
-  premier_22_23[, c(107, 4:7)],
-  premier_23_24[, c(107, 4:7)],
-  premier_24_25[, c(121, 4:7)]
+premier <- bind_rows(
+  premier_20_21 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_21_22 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_22_23 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_23_24 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  premier_24_25 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG)
 )
+
+#   ____________________________________________________________________________
+#   Compute periods                                                          ####
 
 premier <- premier %>%
   group_by(season) %>%
@@ -95,3 +98,5 @@ for (model_name in names(model_runners)) {
     )
   )
 }
+
+save(time_results_premier_half_10, file = "RData/Premier_League/time_results_premier_half_10.RData")

@@ -4,8 +4,10 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(purrr)
+
 #   ____________________________________________________________________________
 #   Data                                                                    ####
+
 ##  ............................................................................
 ##  Bundesliga                                                              ####
 
@@ -22,7 +24,6 @@ bundesliga_22_23$season <- 2023
 bundesliga_23_24$season <- 2024
 bundesliga_24_25$season <- 2025
 
-# Row‐bind keeping only season + the four match columns
 bundesliga <- bind_rows(
   bundesliga_20_21 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
   bundesliga_21_22 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
@@ -31,7 +32,6 @@ bundesliga <- bind_rows(
   bundesliga_24_25 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG)
 )
 
-# Pre‐compute the newest season so we can “protect” it
 latest_season <- max(bundesliga$season, na.rm = TRUE)
 
 bundesliga <- bundesliga %>%
@@ -80,7 +80,6 @@ la_liga <- la_liga %>%
   group_by(season) %>%
   mutate(
     match_id = row_number(),
-    # first half = matches 1…n/2, second half = the rest
     half     = if_else(match_id <= n() / 2, 1L, 2L)
   ) %>%
   ungroup() %>%
@@ -122,7 +121,6 @@ premier <- premier %>%
   group_by(season) %>%
   mutate(
     match_id = row_number(),
-    # first half = matches 1…n/2, second half = the rest
     half     = if_else(match_id <= n() / 2, 1L, 2L)
   ) %>%
   ungroup() %>%
@@ -144,7 +142,7 @@ biv_pois_bundes_scen_1 <- stan_foot(
   predict = 9,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -158,7 +156,7 @@ zero_skellam_premier_scen_1 <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -172,7 +170,7 @@ diag_biv_pois_liga_scen_1 <- stan_foot(
   predict = 10,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -189,7 +187,7 @@ biv_pois_bundes_scen_2 <- stan_foot(
   predict = 27,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -202,7 +200,7 @@ diag_biv_pois_premier_scen_2 <- stan_foot(
   predict = 30,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -215,7 +213,7 @@ diag_biv_pois_liga_scen_2 <- stan_foot(
   predict = 30,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -242,7 +240,7 @@ bundesliga <- bind_rows(
 # Pre‐compute the newest season so we can “protect” it
 latest_season <- max(bundesliga$season, na.rm = TRUE)
 
-bundesliga_half <- bundesliga  %>%
+bundesliga_half <- bundesliga %>%
   group_by(season) %>%
   mutate(
     match_id = row_number(),
@@ -258,9 +256,9 @@ bundesliga_half <- bundesliga  %>%
   ) %>%
   select(periods, HomeTeam, AwayTeam, FTHG, FTAG)
 
-# 
+#
 colnames(bundesliga_half) <- c("periods", "home_team", "away_team", "home_goals", "away_goals")
-# 
+#
 
 
 premier <- rbind(
@@ -333,7 +331,7 @@ biv_pois_bundes_scen_3 <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -346,7 +344,7 @@ biv_pois_premier_scen_3 <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -359,7 +357,7 @@ diag_biv_pois_liga_scen_3 <- stan_foot(
   predict = 190,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -369,18 +367,18 @@ diag_biv_pois_liga_scen_3 <- stan_foot(
 model_fits_by_scen <- list(
   "Final round" = list(
     Bundesliga = biv_pois_bundes_scen_1$fit,
-    Premier   = zero_skellam_premier_scen_1$fit,
-    LaLiga    = diag_biv_pois_liga_scen_1$fit
+    Premier = zero_skellam_premier_scen_1$fit,
+    LaLiga = diag_biv_pois_liga_scen_1$fit
   ),
   "Last three rounds" = list(
     Bundesliga = biv_pois_bundes_scen_2$fit,
-    Premier   = diag_biv_pois_premier_scen_2$fit,
-    LaLiga    = diag_biv_pois_liga_scen_2$fit
+    Premier = diag_biv_pois_premier_scen_2$fit,
+    LaLiga = diag_biv_pois_liga_scen_2$fit
   ),
   "Last second half" = list(
     Bundesliga = biv_pois_bundes_scen_3$fit,
-    Premier   = biv_pois_premier_scen_3$fit,
-    LaLiga    = diag_biv_pois_liga_scen_3$fit
+    Premier = biv_pois_premier_scen_3$fit,
+    LaLiga = diag_biv_pois_liga_scen_3$fit
   )
 )
 
@@ -416,7 +414,7 @@ summary_all <- imap_dfr(model_fits_by_scen, function(fits, scen_label) {
   ) %>%
   # ensure the scenarios appear in the right order:
   mutate(scenario = factor(scenario,
-                           levels = c("Last second half","Last three rounds","Final round")
+    levels = c("Last second half", "Last three rounds", "Final round")
   ))
 
 
@@ -424,9 +422,9 @@ summary_1_10 <- summary_all %>%
   filter(period <= 10) %>%
   mutate(
     period = factor(period, levels = 1:10),
-    model  = factor(model,
-                    levels = c("Bundesliga","Premier","LaLiga"),
-                    labels = c("Bundesliga","EPL","La Liga")
+    model = factor(model,
+      levels = c("Bundesliga", "Premier", "LaLiga"),
+      labels = c("Bundesliga", "EPL", "La Liga")
     )
   )
 
@@ -434,8 +432,9 @@ summary_1_10 <- summary_all %>%
 # 2. Plot with error bars + points, discrete x, and facet grid
 comm_prec_plot <- ggplot(summary_1_10, aes(x = period, y = mean_phi, color = type)) +
   geom_errorbar(aes(ymin = lower_ci, ymax = upper_ci),
-                position = position_dodge(width = 0.5),
-                width = 0.2) +
+    position = position_dodge(width = 0.5),
+    width = 0.2
+  ) +
   geom_point(position = position_dodge(width = 0.5), size = 2) +
   facet_grid(scenario ~ model, scales = "free_x") +
   scale_color_manual(
@@ -447,10 +446,11 @@ comm_prec_plot <- ggplot(summary_1_10, aes(x = period, y = mean_phi, color = typ
     labels = c(
       attack  = "Attack",
       defense = "Defense"
-    )) +
+    )
+  ) +
   labs(
     x     = "Periods",
-    y     = expression(phi~values),
+    y     = expression(phi ~ values),
     color = "",
   ) +
   theme_bw() +

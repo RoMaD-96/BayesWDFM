@@ -23,7 +23,7 @@ bundesliga_22_23$season <- 2023
 bundesliga_23_24$season <- 2024
 bundesliga_24_25$season <- 2025
 
-# Row‐bind keeping only season + the four match columns
+
 bundesliga <- bind_rows(
   bundesliga_20_21 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
   bundesliga_21_22 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
@@ -32,31 +32,28 @@ bundesliga <- bind_rows(
   bundesliga_24_25 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG)
 )
 
-# Pre‐compute the newest season so we can “protect” it
+
 latest_season <- max(bundesliga$season, na.rm = TRUE)
 
 #   ____________________________________________________________________________
 #   Compute periods                                                          ####
 
-bundesliga <- bundesliga  %>%
+bundesliga <- bundesliga %>%
   group_by(season) %>%
   mutate(
     match_id = row_number(),
-    # first half = matches 1…n/2, second half = the rest
     half     = if_else(match_id <= n() / 2, 1L, 2L)
   ) %>%
   ungroup() %>%
   mutate(
-    # force the newest season to be all “half 1”
     half    = if_else(season == latest_season, 1L, half),
-    # compute a global period index
     periods = (season - min(season)) * 2 + half
   ) %>%
   select(periods, HomeTeam, AwayTeam, FTHG, FTAG)
 
-# 
- colnames(bundesliga) <- c("periods", "home_team", "away_team", "home_goals", "away_goals")
-# 
+
+colnames(bundesliga) <- c("periods", "home_team", "away_team", "home_goals", "away_goals")
+
 
 ### . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ..
 ### Dynamic Models                                                          ####
@@ -251,7 +248,7 @@ biv_pois_comm <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -267,7 +264,7 @@ diag_biv_pois_comm <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -283,7 +280,7 @@ double_pois_comm <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -299,7 +296,7 @@ neg_bin_comm <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -315,7 +312,7 @@ skellam_comm <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -331,7 +328,7 @@ zero_skellam_comm <- stan_foot(
   predict = 153,
   dynamic_type = "seasonal",
   dynamic_weight = TRUE,
-  dynamic_par = list(spike_prob = 0.01, slab = normal(0,5), spike = normal(100, 0.1)),
+  dynamic_par = list(spike_prob = 0.01, slab = normal(0, 5), spike = normal(100, 0.1)),
   home_effect = TRUE,
   iter_sampling = 1000, chains = 4,
   parallel_chains = 4,
@@ -359,7 +356,7 @@ zero_skellam_comm <- stan_foot(
 #   skellam_comm       = skellam_comm,
 #   zero_skellam_comm  = zero_skellam_comm
 # )
-# 
+#
 # save(list = names(models_to_save),
 #      file = "all_models_bundes.RData")
 
@@ -368,8 +365,8 @@ zero_skellam_comm <- stan_foot(
 ### Model Comparison                                                        ####
 
 max <- nrow(bundesliga)
-min <- max-152
-bundesliga_test <- bundesliga[min:max,]
+min <- max - 152
+bundesliga_test <- bundesliga[min:max, ]
 
 comparison_bundes_half <- compare_foot(source = list(
   biv_pois_comm = biv_pois_comm,
@@ -414,7 +411,7 @@ pars <- c("att", "def", "comm_sd_att", "comm_sd_def")
 # Function to extract one fit’s grouped diagnostics
 extract_diagnostics <- function(mod, model_name) {
   sum_df <- mod$fit$summary()
-  
+
   sum_df %>%
     dplyr::filter(stringr::str_detect(
       variable,

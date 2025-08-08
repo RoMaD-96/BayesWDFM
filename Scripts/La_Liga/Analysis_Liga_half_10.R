@@ -23,24 +23,21 @@ liga_22_23$season <- 2023
 liga_23_24$season <- 2024
 liga_24_25$season <- 2025
 
-la_liga <- rbind(
-  liga_20_21[, c(106, 4:7)],
-  liga_21_22[, c(106, 4:7)],
-  liga_22_23[, c(106, 4:7)],
-  liga_23_24[, c(106, 4:7)],
-  liga_24_25[, c(120, 4:7)]
+la_liga <- bind_rows(
+  liga_20_21 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_21_22 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_22_23 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_23_24 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG),
+  liga_24_25 %>% select(season, HomeTeam, AwayTeam, FTHG, FTAG)
 )
-
 
 #   ____________________________________________________________________________
 #   Compute periods                                                          ####
-
 
 la_liga <- la_liga %>%
   group_by(season) %>%
   mutate(
     match_id = row_number(),
-    # first half = matches 1…n/2, second half = the rest
     half     = if_else(match_id <= n() / 2, 1L, 2L)
   ) %>%
   ungroup() %>%

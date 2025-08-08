@@ -145,7 +145,7 @@ df_long_mean_based <- combined %>%
 
 df_all <- bind_rows(
   df_long_scoring_rules,
-  df_long_mean_based 
+  df_long_mean_based
 )
 
 my_cols <- c(
