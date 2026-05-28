@@ -6,6 +6,6 @@
 .RDataTmp*
 .DS_Store
 Plot_Spike_Slab.R
-metrics_score.R
+metrics_scores.R
 /RData/
 /Submission/
