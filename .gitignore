@@ -2,12 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-.rds
-.RDataTmp
-.RDataTmp1
-.RDataTmp2
+*.rds
+.RDataTmp*
+.DS_Store
 Plot_Spike_Slab.R
 metrics_score.R
 /RData/
-/Submission
-.DS_Store
+/Submission/
